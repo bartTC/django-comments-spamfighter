@@ -96,7 +96,7 @@ class SpamFighterModerator(CommentModerator):
         otherwise.
         """
         # Original CommentModerator check
-        orig_allow = super(SpamFightModerator, self).allow(comment, content_object, request)
+        orig_allow = super(SpamFighterModerator, self).allow(comment, content_object, request)
         if not orig_allow:
             return False
 
@@ -123,7 +123,7 @@ class SpamFighterModerator(CommentModerator):
         Return ``True`` if the comment should be moderated (marked
         non-public), ``False`` otherwise.
         """
-        orig_moderate = super(SpamFightModerator, self).moderate(comment, content_object, request)
+        orig_moderate = super(SpamFighterModerator, self).moderate(comment, content_object, request)
         if orig_moderate:
             return True
 

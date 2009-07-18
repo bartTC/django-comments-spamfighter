@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name='django-comments-spamfighter',
-    version='0.2',
+    version='0.3',
     description="A Django app that contributes Akismet and Keyword blocking to your django comments.",
     long_description=read('README'),
     author='Martin Mahner',
