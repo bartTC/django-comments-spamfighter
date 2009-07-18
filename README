@@ -1,0 +1,42 @@
+===========================
+django-comments-spamfighter
+===========================
+
+This app contributes a CommentModerator that doees two things:
+
+* Block or moderate new comments if they contain a given keyword.
+  This keyword might be a regular expression or a simple string.
+  You can add and edit these keywords using Django's admin interface.
+
+* Block or moderate comments with Akismet.
+
+Docs will follow soon. So long here is a sample installation. However, see
+Django's comments moderator docs for a general installation::
+
+    from comments_spamfighter.moderation import SpamFightModerator
+
+    class EntryModerator(SpamFightModerator):
+
+    	# Regular options by django's contributed CommentModerator
+        auto_moderate_field = 'created'
+        email_notification = True
+
+		# ====================
+		# Spam fighter options
+		# ====================
+
+        # Check with Akismet for spam
+        akismet_check = False
+
+        # If Akismet marks this message as spam, delete it instantly (True) or
+        # add it the comment the moderation queue (False). Default is False.
+        akismet_check_moderate = False
+
+        # Do a keyword check
+        keyword_check = True
+
+        # If a keyword is found, delete it instantly (True) or add the comment to
+        # the moderation queue (False). Default is True.
+        keyword_check_moderate = False
+
+    moderator.register(Entry, EntryModerator)
