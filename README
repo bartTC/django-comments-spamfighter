@@ -13,17 +13,17 @@ This app contributes a CommentModerator that doees two things:
 Docs will follow soon. So long here is a sample installation. However, see
 Django's comments moderator docs for a general installation::
 
-    from comments_spamfighter.moderation import SpamFightModerator
+    from comments_spamfighter.moderation import SpamFighterModerator
 
-    class EntryModerator(SpamFightModerator):
+    class EntryModerator(SpamFighterModerator):
 
     	# Regular options by django's contributed CommentModerator
         auto_moderate_field = 'created'
         email_notification = True
 
-		# ====================
-		# Spam fighter options
-		# ====================
+        # ====================
+        # Spam fighter options
+        # ====================
 
         # Check with Akismet for spam
         akismet_check = False

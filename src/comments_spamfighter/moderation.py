@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from comments_spamfighter.models import Keyword
 import re
 
-class SpamFightModerator(CommentModerator):
+class SpamFighterModerator(CommentModerator):
     """
     """
     # Check with Akismet for spam
