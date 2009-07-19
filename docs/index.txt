@@ -1,0 +1,40 @@
+.. _index:
+
+==================================
+Comments Spamfighter Documentation
+==================================
+
+This Django application contributes a moderation class to Django's comment app
+that provides:
+
+* Check incoming comments against the Akismet_ spam database and either block
+  them directly or add them to the moderation queue.
+
+* Check incoming comments against pre-defined keywords and either block them
+  directly or add these them to the moderation queue. These keywords can be
+  simple strings or powerful regular expressions.
+
+.. note:: Comments spamfighter needs Django 1.1 and up. It does not work with
+   Django 1.0!
+
+
+.. _Akismet: http://akismet.com/
+
+Documentation overview
+======================
+
+.. toctree::
+   :maxdepth: 1
+   
+   installation
+   configuration
+
+The moderation options in detail:
+
+.. toctree::
+   :maxdepth: 1
+   
+   akismet_moderation
+   keyword_moderation
+
+    

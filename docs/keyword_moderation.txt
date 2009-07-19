@@ -1,0 +1,95 @@
+.. _keyword_moderation: 
+
+==================
+Keyword moderation
+==================
+
+Usage
+=====
+
+Comments spamfighter contributes a simple but powerful keyword detection. The
+logic is simple: *If a <keyword> is in the <comment field>, then block the
+comment or add it to the moderation queue*.
+
+Keyword moderation is **enabled by default**. You can disable it if you set ``keyword_check``
+to ``False``. You can also set ``keyword_check_moderate`` which means that the
+comment should be blocked (``False``) or added to the moderation queue (``True``)
+if a keyword is found.
+
+Here is a sample moderation class::
+
+    class MyModerator(SpamFighterModerator):
+
+        # Do a keyword check
+        keyword_check = True
+
+        # If a keyword is found, delete it instantly (True) or add the comment to
+        # the moderation queue (False). Default is True.
+        keyword_check_moderate = False
+    
+Admin handling
+==============
+
+Keyword handling is done through Django's admin interface. It's pretty
+simple. You need to add a  keyword and assign the comment fields which should
+be checked against this keyword.
+
+.. image:: .static/admin-keywords.png
+
+You can optionally check the *Is a regular expression* checkbox. The comment
+spamfighter moderator will tread this string as a regular expression and tries
+to match the text.
+
+You don't need to worry about invalid regular expressions, the admin will do 
+a test-check before saving to ensure validness.
+
+.. image:: .static/admin-keywords-regexp.png
+
+Checked fields
+==============
+
+The fields listed in the admin *Fields to check*-field can be overwritten
+with a setting ``COMMENTS_CHECK_FIELDS_CHOICES`` in your ``settings.py``.
+
+Simple add some choices where the first element is the name of the field and
+the second a human readable title. Here is an example which is also the
+default setting::
+
+    COMMENTS_CHECK_FIELDS_CHOICES = (
+        ('user_name', 'Username'),
+        ('user_email', 'User Email'),
+        ('user_url', 'User URL'),
+        ('comment', 'Comment text'),
+        ('ip_address', 'IP Address'),
+    )
+
+.. note:: Comments spamfighter will ignore non-existing fields while your
+   settings.DEBUG setting is False. It will raise an exception if it's True.
+   
+Under the hood
+==============
+
+What happens under the hood for simple keywords?
+------------------------------------------------
+
+Simple keywords and the content of the field are **always lowered** before
+matching. This means that keyword ``viagra`` matches all of the following 
+comment texts::
+
+    Blabla Viagra.
+    Blabla vIAgra.
+    Blabla VIAGRA.
+    
+Under the hood, the moderator makes a simple python ``in`` statement::
+
+    if <keyword> in <field>:
+        return True
+    
+What happens under the hood for regular expression keywords?
+------------------------------------------------------------
+
+Unlike simple keywords, regular expressions are not lowered before matching.
+Under the hood, the moderator makes a multiline ``re.match`` check::
+
+    if re.match(<keyword>, <field>, re.MULTILINE):
+        return True

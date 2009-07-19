@@ -1,0 +1,54 @@
+.. _akismet_moderation: 
+
+==================
+Akismet moderation
+==================
+
+Configuration
+=============
+
+1. Get an api key
+-----------------
+
+Before starting you need a Akismet API Key. See `the Akismet faq`_ how to get
+one. Then place this api key in a setting called ``AKISMET_SECRET_API_KEY`` in
+your ``settings.py``. Example::
+
+    # settings.py
+    AKISMET_SECRET_API_KEY = 'abcdefghijkl1234'
+
+.. _the Akismet faq: http://akismet.com/personal/
+
+2. Install the akismet module
+-----------------------------
+
+Next you need the ``akismet`` module. You an download it on `voidspace.org.uk`_ 
+or simply install it using easy_install::
+
+    easy_install akismet
+
+.. _voidspace.org.uk: http://www.voidspace.org.uk/python/akismet_python.html
+
+Usage
+=====
+Akismet moderation is **disabled by default**. You can enable it if you set
+``akismet_check`` to ``True``.
+
+You can also set ``akismet_check_moderate`` which means that the comment
+should be blocked (``False``) or added to the moderation queue (``True``)
+if the Akismet api marks this message as spam.
+
+.. note:: Sometimes Akismet has some false positive. We suggest that you leave
+   moderation enabled for the first time.
+
+Here is a sample moderation class::
+
+    class MyModerator(SpamFighterModerator):
+
+        # Check with Akismet for spam
+        akismet_check = False
+
+        # If Akismet marks this message as spam, delete it instantly (True) or
+        # add it the comment the moderation queue (False). Default is False.
+        akismet_check_moderate = False
+    

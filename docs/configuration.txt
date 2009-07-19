@@ -1,0 +1,61 @@
+.. _configuration:
+
+=============
+Configuration
+=============
+
+1. Edit your installed apps
+===========================
+
+Add ``comments_spamfighter`` to your installed apps within your ``settings.py``
+file::
+
+    # settings.py
+    INSTALLED_APPS = (
+        ...
+        'comments_spamfighter',
+    )
+
+2. Resync your database
+=======================
+
+Then do a ``./manage.py syncdb`` that creates the keyword table for you.
+
+3. Add or edit a the comment moderation
+=======================================
+
+.. warning:: If you are not familiar with Django's generic comment moderation
+   we strongly suggest that you first read the `official documentation`_.
+
+Import the ``SpamFighterModerator`` moderator class from
+``comments_spamfighter.moderation`` and subclass it using your settings.
+Note that all the inherited moderation settings and functions from Django's
+generic moderation are usable. Here is a quick example::
+
+    from comments_spamfighter.moderation import SpamFighterModerator
+
+    class EntryModerator(SpamFighterModerator):
+        # django's genric moderation options
+        auto_moderate_field = 'created'
+        email_notification = True
+    
+        # comments spamfighter options
+        akismet_check = True
+        akismet_check_moderate = True
+        keyword_check = True
+        keyword_check_moderate = False
+
+    moderator.register(Entry, EntryModerator)
+
+4. Further settings
+===================
+
+Read the appropriate documents for a description about this settings:
+
+.. toctree::
+   :maxdepth: 1
+   
+   akismet_moderation
+   keyword_moderation
+
+.. _official documentation: http://docs.djangoproject.com/en/dev/ref/contrib/comments/moderation/#ref-contrib-comments-moderation
