@@ -23,8 +23,8 @@ Here is a sample moderation class::
         # Do a keyword check
         keyword_check = True
 
-        # If a keyword is found, delete it instantly (True) or add the comment to
-        # the moderation queue (False). Default is True.
+        # If a keyword is found, delete it instantly (False) or add the comment to
+        # the moderation queue (True). Default is False.
         keyword_check_moderate = False
     
 Admin handling

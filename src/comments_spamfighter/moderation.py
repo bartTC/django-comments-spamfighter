@@ -11,15 +11,15 @@ class SpamFighterModerator(CommentModerator):
     # Check with Akismet for spam
     akismet_check = False
 
-    # If Akismet marks this message as spam, delete it instantly (True) or
-    # add it the comment the moderation queue (False). Default is False.
-    akismet_check_moderate = False
+    # If Akismet marks this message as spam, delete it instantly (False) or
+    # add it the comment the moderation queue (True). Default is True.
+    akismet_check_moderate = True
 
     # Do a keyword check
     keyword_check = True
 
-    # If a keyword is found, delete it instantly (True) or add the comment to
-    # the moderation queue (False). Default is True.
+    # If a keyword is found, delete it instantly (False) or add the comment to
+    # the moderation queue (True). Default is False.
     keyword_check_moderate = False
 
     def _keyword_check(self, comment, content_object, request):

@@ -2,41 +2,50 @@
 django-comments-spamfighter
 ===========================
 
-This app contributes a CommentModerator that doees two things:
+This Django application contributes a moderation class to Django’s comment app that provides:
 
-* Block or moderate new comments if they contain a given keyword.
-  This keyword might be a regular expression or a simple string.
-  You can add and edit these keywords using Django's admin interface.
+* Check incoming comments against the Akismet spam database and either block
+  them directly or add them to the moderation queue.
 
-* Block or moderate comments with Akismet.
+* Check incoming comments against pre-defined keywords and either block them
+  directly or add these them to the moderation queue. These keywords can be
+  simple strings or powerful regular expressions.
 
-Docs will follow soon. So long here is a sample installation. However, see
-Django's comments moderator docs for a general installation::
+The documentation is online::
+
+    http://docs.mahner.org/django-comments-spamfighter/
+
+
+Quick installation
+==================
+
+Here is a quick installation guide for users who are familiar with comment
+moderation::
 
     from comments_spamfighter.moderation import SpamFighterModerator
 
     class EntryModerator(SpamFighterModerator):
 
     	# Regular options by django's contributed CommentModerator
+    	
         auto_moderate_field = 'created'
         email_notification = True
 
-        # ====================
+
         # Spam fighter options
-        # ====================
 
         # Check with Akismet for spam
         akismet_check = False
 
-        # If Akismet marks this message as spam, delete it instantly (True) or
-        # add it the comment the moderation queue (False). Default is False.
-        akismet_check_moderate = False
+        # If Akismet marks this message as spam, delete it instantly (False) or
+        # add it the comment the moderation queue (True). Default is True.
+        akismet_check_moderate = True
 
         # Do a keyword check
         keyword_check = True
 
-        # If a keyword is found, delete it instantly (True) or add the comment to
-        # the moderation queue (False). Default is True.
+        # If a keyword is found, delete it instantly (False) or add the comment to
+        # the moderation queue (True). Default is False.
         keyword_check_moderate = False
 
     moderator.register(Entry, EntryModerator)

@@ -48,7 +48,7 @@ Here is a sample moderation class::
         # Check with Akismet for spam
         akismet_check = False
 
-        # If Akismet marks this message as spam, delete it instantly (True) or
-        # add it the comment the moderation queue (False). Default is False.
-        akismet_check_moderate = False
+        # If Akismet marks this message as spam, delete it instantly (False) or
+        # add it the comment the moderation queue (True). Default is True.
+        akismet_check_moderate = True
     
