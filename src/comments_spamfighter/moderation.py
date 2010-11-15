@@ -110,13 +110,14 @@ class SpamFighterModerator(CommentModerator):
         from django.utils.encoding import smart_str
         defensio_api = Defensio(api_key=DEFENSIO_API_KEY)
 
+        # http://defensio.com/api
+        # First three: type, platform and content are obligatory
         defensio_data = {'type': 'comment',
                         'platform': 'django',
                         'content': smart_str(comment.comment),
-                        'referrer': '',
-                        'user_agent': '',
-                        'user_ip': comment.ip_address,
-                        'http-headers': '%s://%s/' % (request.is_secure() and 'https' or 'http', Site.objects.get_current().domain)
+                        'referrer': request.META.get('HTTP_REFERER'),
+                        'author-ip': comment.ip_address,
+                        'http-headers': ['%s: %s' % ('HTTP_USER_AGENT', request.META.get('HTTP_USER_AGENT'))],
                         }
 
         status, result = defensio_api.post_document(defensio_data)
