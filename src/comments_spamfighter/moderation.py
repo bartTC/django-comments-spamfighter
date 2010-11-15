@@ -87,6 +87,45 @@ class SpamFighterModerator(CommentModerator):
                 return True
         return False
 
+    def _defensio_check(self, comment, content_object, request):
+        """
+        Connects to Defensio and returns True if Defensio marks this comment as
+        spam. Otherwise returns False.
+        """
+
+        # Check if the defensio library is installed, fail silently if
+        # settings.DEBUG is False and return False (not moderated)
+        try:
+            from defensio import Defensio
+        except ImportError:
+            raise ImportError('defensio library is not installed. "easy_install defensio" does the job.')
+
+        # Check if the defensio api key is set, fail silently if
+        # settings.DEBUG is False and return False (not moderated)
+        DEFENSIO_API_KEY = getattr(settings, 'DEFENSIO_SECRET_API_KEY', False)
+
+        if not DEFENSIO_API_KEY:
+            raise ImproperlyConfigured('You must set DEFENSIO_SECRET_API_KEY with your api key in your settings file.')
+
+        from django.utils.encoding import smart_str
+        defensio_api = Defensio(api_key=DEFENSIO_API_KEY)
+
+        defensio_data = {'type': 'comment',
+                        'platform': 'django',
+                        'content': smart_str(comment.comment),
+                        'referrer': '',
+                        'user_agent': '',
+                        'user_ip': comment.ip_address,
+                        'http-headers': '%s://%s/' % (request.is_secure() and 'https' or 'http', Site.objects.get_current().domain)
+                        }
+
+        status, result = defensio_api.post_document(defensio_data)
+
+        if status == 200 and not result['defensio-result']['allow']:
+            return True
+
+        return False
+
     def allow(self, comment, content_object, request):
         """
         Determine whether a given comment is allowed to be posted on
