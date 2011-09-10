@@ -7,6 +7,9 @@ This Django application contributes a moderation class to Django’s comment app
 * Check incoming comments against the Akismet spam database and either block
   them directly or add them to the moderation queue.
 
+* Check incoming comments against the Defensio spam database and either block
+  them directly or add them to the moderation queue.
+
 * Check incoming comments against pre-defined keywords and either block them
   directly or add these them to the moderation queue. These keywords can be
   simple strings or powerful regular expressions.
